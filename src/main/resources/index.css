@@ -1,2 +1,15 @@
 
+body {
+    line-height:20px; margin:0; padding:0;
+}
+
+#side-menu {
+    background:skyblue; width:300px; position:fixed; left:0; top:0;
+    padding:20px;
+}
+
+#content-box {
+    padding:20px; background:#eee; margin-left:340px;
+}
+
 /*end of file*/

@@ -36,6 +36,9 @@ public class App {
             server.createContext("/",         new RootHandler());
             server.createContext("/resources",new ResourcesHandler());
             
+            //main handlers
+            server.createContext("/products/upload",new ProductsUploadHandler());
+            
             //start server
             server.start();
             Utils.log("Simple Sale Management System started on port "+PORT);
