@@ -6,10 +6,51 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.currentView  = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
     $scope.productsFile = null;
     $scope.products     = [];
+    $scope.productsSaveAs = "";
 
     //load view for menu item
     function loadView(viewIndex) {
         $scope.currentView = viewIndex;
+    }
+
+    //trigger download
+    function triggerDownload(fileName,fileContent,addBom) {
+        var textToSave    = fileContent;
+        var hiddenElement = document.createElement("a");
+
+        //utf-8 BOM
+        if (addBom==true) {
+            textToSave = "\xFF\xFE"+textToSave; //utf-16
+            //utf-8: "\xEF\xBB\xBF"
+        }
+
+        //create file
+        var file = new File(
+            [textToSave],
+            fileName,
+            {type:"text/plain;charset=UTF-8"}
+        );
+
+        var blobUrl = URL.createObjectURL(file);
+
+        //log
+        console.log("Downloading file '"+fileName+"'...");
+        console.log("Text size:",fileContent.length,"characters");
+        console.log("Blob URL:",blobUrl);
+
+        //link contents
+        /*
+        //old method using 'data' protocol but content can't exceed 2MB in Chrome
+        hiddenElement.href     = "data:attachment/text;charset=utf-8,%EF%BB%BF"+encodeURI(textToSave);
+        */
+        hiddenElement.href     = blobUrl;
+        hiddenElement.target   = "_blank";
+        hiddenElement.download = fileName;
+
+        //trigger download
+        document.body.appendChild(hiddenElement);
+        hiddenElement.click();
+        document.body.removeChild(hiddenElement);
     }
 
     //handle products file select
@@ -132,6 +173,28 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //save products to file
+    function saveProductsToFile() {
+
+        //post to server
+        $http.post("/products/list",{}).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            var jsonStr = JSON.stringify(data.products);
+            triggerDownload("products.json",jsonStr);
+        },
+        function error(response) {
+            alert("Failed to get product list!");
+        });
+    }
+
     //view init
     function init() {
         if ($("#products-file").length==0) {
@@ -143,11 +206,12 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     }
 
     //ALL SCOPE FUNCTIONS=======================================================
-    $scope.loadView       = loadView;
-    $scope.uploadProducts = uploadProducts;
-    $scope.addProduct     = addProduct;
-    $scope.getProductList = getProductList;
-    $scope.init           = init;
+    $scope.loadView           = loadView;
+    $scope.uploadProducts     = uploadProducts;
+    $scope.addProduct         = addProduct;
+    $scope.getProductList     = getProductList;
+    $scope.saveProductsToFile = saveProductsToFile;
+    $scope.init               = init;
 }]);
 
 //end of file
