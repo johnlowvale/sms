@@ -130,9 +130,18 @@ public class Http {
      */
     public static void send(HttpExchange http,int status,String responseText) {
         try {
-            http.sendResponseHeaders(status,responseText.length());
+          
+            //get bytes
+            byte[] bytes = responseText.getBytes("UTF-8");
+          
+            //content length header
+            http.sendResponseHeaders(status,bytes.length);
+            
+            //write
             OutputStream bodyWriter = http.getResponseBody();
-            bodyWriter.write(responseText.getBytes());
+            bodyWriter.write(bytes);
+            
+            //close response
             bodyWriter.close();
         }
         catch (Exception exception) {

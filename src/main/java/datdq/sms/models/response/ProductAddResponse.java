@@ -1,25 +1,27 @@
 /*
  * Simple Sale Management System
  * DSA Assignment 1
- * @file    Products upload response model class file
+ * @file    Product add response model class file
  * @version 1.0
  * @author  Dat Dinhquoc
  */
 package datdq.sms.models.response;
 
 /**
- * Products upload response model class
+ * Product add response model class
  * @author johnlowvale
  */
-public class ProductsUploadResponse {
-    
+public class ProductAddResponse {
+
     //properties
-    public int productCount;
+    public String message;
+    public int    productCount;
     
     /**
      * Constructor
      */
-    public ProductsUploadResponse() {
+    public ProductAddResponse() {
+        message      = "";
         productCount = 0;
     }
 }

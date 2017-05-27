@@ -12,7 +12,7 @@ package datdq.sms.models;
  * @author johnlowvale
  */
 public class Product {
-
+  
     //properties
     public String pcode; //product code
     public String pro_name; //product name
