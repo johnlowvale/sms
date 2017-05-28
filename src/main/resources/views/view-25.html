@@ -1,1 +1,29 @@
-2.5
+<big><b>Search for customers</b></big>
+<div>&nbsp;</div>
+
+Customer code (ccode, eg: t7):<br/>
+<input id="customer-code-search"/>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: multiple customers may be shown</i><br/>
+<button ng-click="searchForCustomers();">Search for customers</button>
+<div>&nbsp;</div>
+
+<table class="generic-table">
+<thead>
+<tr>
+    <th>#</th>
+    <th>ccode</th>
+    <th>cus_name</th>
+    <th>phone</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="customer in foundCustomers">
+    <td>{{$index+1}}</td>
+    <td>{{customer.ccode}}</td>
+    <td>{{customer.cus_name}}</td>
+    <td>{{customer.phone}}</td>
+</tr>
+</tbody>
+</table>

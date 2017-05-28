@@ -47,7 +47,7 @@ public class App {
             server.createContext("/",         new RootHandler());
             server.createContext("/resources",new ResourcesHandler());
             
-            //main handlers
+            //product handlers
             server.createContext("/product/add",     new ProductAddHandler());
             server.createContext("/product/delete",  new ProductDeleteHandler());
             
@@ -56,10 +56,19 @@ public class App {
             server.createContext("/products/search", new ProductsSearchHandler());            
             server.createContext("/products/sort",   new ProductsSortHandler());
             
+            //customer handlers
+            server.createContext("/customer/add",     new CustomerAddHandler());
+            server.createContext("/customer/delete",  new CustomerDeleteHandler());
+            
+            server.createContext("/customers/upload", new CustomersUploadHandler());            
+            server.createContext("/customers/list",   new CustomersListHandler());
+            server.createContext("/customers/search", new CustomersSearchHandler());
+            
             //start server
             server.start();
             Utils.log("Simple Sale Management System started on port "+PORT);
             Utils.log("Point browser to http://localhost to view the web application!");
+            Utils.log("This web application has been only tested on Chrome!");
             Utils.log("\nWARNING:");
             Utils.log("PRODUCTS, CUSTOMERS, ORDERS DATA ARE STORED IN VARIABLES,");
             Utils.log("ALL DATA ARE RESET EVERY TIME THIS WEB APPLICATION RUNS!");

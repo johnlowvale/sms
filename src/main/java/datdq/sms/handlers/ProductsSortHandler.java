@@ -35,6 +35,12 @@ public class ProductsSortHandler implements HttpHandler {
         Http.logRequest(http);
         Gson gson = new Gson();
         
+        //nothing to sort
+        if (App.products.size()==0) {
+            Http.sendJson(http,Utils.errorJson("Nothing to sort!"));
+            Utils.log("Response sent.");
+        }
+        
         //sort 
         Algos.quicksort(App.products,0,App.products.size()-1,new ProductComparator());
         

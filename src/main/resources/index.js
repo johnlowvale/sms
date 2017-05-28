@@ -4,10 +4,17 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
 
     //scope variables
     $scope.currentView    = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
+
+    //product
     $scope.productsFile   = null; //product file select
     $scope.products       = []; //product list
     $scope.foundProducts  = []; //product search
     $scope.sortedProducts = []; //product sort
+
+    //customer
+    $scope.customersFile  = null; //customer file select
+    $scope.customers      = []; //customer list
+    $scope.foundCustomers = []; //customer search
 
     //load view for menu item
     function loadView(viewIndex) {
@@ -60,6 +67,12 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         $scope.productsFile = file;
     }
 
+    //handle customers file select
+    function handleCustomersFile(event) {
+        var file = event.target.files[0];
+        $scope.customersFile = file;
+    }
+
     //upload products
     function uploadProducts() {
         var reader = new FileReader();
@@ -108,6 +121,54 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         reader.readAsText($scope.productsFile);
     }
 
+    //upload customers
+    function uploadCustomers() {
+        var reader = new FileReader();
+
+        //reading done event
+        reader.onload = function(e) {
+            try {
+                var customers = JSON.parse(reader.result);
+
+                //check json data
+                if (customers.length==0) {
+                    alert("Error: Empty customers file");
+                    return;
+                }
+
+                if (customers[0].ccode==null || customers[0].ccode.length==0 ||
+                customers[0].cus_name==null || customers[0].cus_name.length==0) {
+                    alert("Error: Bad customers file");
+                    return;
+                }
+
+                //post to server
+                $http.post("/customers/upload",{
+                    customers: customers
+                }).
+                then(
+                function success(response){
+                    var data = response.data;
+
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    alert("Successfully uploaded "+data.customerCount+" customers!");
+                },
+                function error(response) {
+                    alert("Failed to upload customers!");
+                });
+            }
+            catch (error) {
+                alert(error);
+            }
+        };
+
+        reader.readAsText($scope.customersFile);
+    }
+
     //add product
     function addProduct() {
         var productCode  = $("#product-code-add").val().trim();
@@ -152,6 +213,40 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //add customer
+    function addCustomer() {
+        var customerCode  = $("#customer-code-add").val().trim();
+        var customerName  = $("#customer-name-add").val().trim();
+        var customerPhone = $("#customer-phone-add").val().trim();
+
+        //check value
+        if (customerCode.length==0 || customerName.length==0 || customerPhone.length==0) {
+            alert("Please enter all fields");
+            return;
+        }
+
+        //post to server
+        $http.post("/customer/add",{
+            ccode:    customerCode,
+            cus_name: customerName,
+            phone:    customerPhone
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            alert(data.message+"\nCurrent number of customers: "+data.customerCount);
+        },
+        function error(response) {
+            alert("Failed to add customer!");
+        });
+    }
+
     //get all products
     function getProductList() {
 
@@ -174,6 +269,28 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //get all customers
+    function getCustomerList() {
+
+        //post to server
+        $http.post("/customers/list",{}).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.customers = data.customers;
+            alert("Current number of customers: "+data.customers.length);
+        },
+        function error(response) {
+            alert("Failed to get product list!");
+        });
+    }
+
     //save products to file
     function saveProductsToFile() {
 
@@ -189,10 +306,32 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
             }
 
             var jsonStr = JSON.stringify(data.products);
-            triggerDownload("products.json",jsonStr);
+            triggerDownload("products-all.json",jsonStr);
         },
         function error(response) {
             alert("Failed to get product list!");
+        });
+    }
+
+    //save customers to file
+    function saveCustomersToFile() {
+
+        //post to server
+        $http.post("/customers/list",{}).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            var jsonStr = JSON.stringify(data.customers);
+            triggerDownload("customers-all.json",jsonStr);
+        },
+        function error(response) {
+            alert("Failed to get customer list!");
         });
     }
 
@@ -226,6 +365,36 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //search for customers
+    function searchForCustomers() {
+        var customerCode = $("#customer-code-search").val().trim();
+
+        //check value
+        if (customerCode.length==0) {
+            alert("Please enter all fields");
+            return;
+        }
+
+        //post to server
+        $http.post("/customers/search",{
+            ccode: customerCode
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.customerProducts = data.customers;
+        },
+        function error(response) {
+            alert("Failed to search for customers!");
+        });
+    }
+
     //delete a product
     function deleteProduct() {
         var productCode = $("#product-code-delete").val().trim();
@@ -256,6 +425,36 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //delete a customer
+    function deleteCustomer() {
+        var customerCode = $("#customer-code-delete").val().trim();
+
+        //check value
+        if (customerCode.length==0) {
+            alert("Please enter all fields");
+            return;
+        }
+
+        //post to server
+        $http.post("/customer/delete",{
+            ccode: customerCode
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            alert(data.message);
+        },
+        function error(response) {
+            alert("Failed to delete customer!");
+        });
+    }
+
     //sort all products
     function sortProductList() {
 
@@ -280,16 +479,19 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
 
     //view init
     function init() {
-        if ($("#products-file").length==0) {
+        if ($("#products-file").length==0 || $("#customers-file").length==0) {
             setTimeout(init,100);
             return;
         }
 
         document.getElementById("products-file").addEventListener("change",handleProductsFile,false);
+        document.getElementById("customers-file").addEventListener("change",handleCustomersFile,false);
     }
 
     //ALL SCOPE FUNCTIONS=======================================================
-    $scope.loadView           = loadView;
+    $scope.loadView = loadView;
+
+    //products
     $scope.uploadProducts     = uploadProducts;
     $scope.addProduct         = addProduct;
     $scope.getProductList     = getProductList;
@@ -297,7 +499,17 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.searchForProducts  = searchForProducts;
     $scope.deleteProduct      = deleteProduct;
     $scope.sortProductList    = sortProductList;
-    $scope.init               = init;
+
+    //customers
+    $scope.uploadCustomers     = uploadCustomers;
+    $scope.addCustomer         = addCustomer;
+    $scope.getCustomerList     = getCustomerList;
+    $scope.saveCustomersToFile = saveCustomersToFile;
+    $scope.searchForCustomers  = searchForCustomers;
+    $scope.deleteCustomer      = deleteCustomer;
+
+    //view init
+    $scope.init = init;
 }]);
 
 //end of file
