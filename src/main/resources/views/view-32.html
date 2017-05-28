@@ -1,1 +1,33 @@
-3.2
+<big><b>Order list</b></big>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: 10000 orders or above may make browser lag a bit</i><br/>
+<button ng-click="getOrderList();">Get order list</button>
+<div>&nbsp;</div>
+
+<table class="generic-table">
+<thead>
+<tr>
+    <th>#</th>
+    <th>ccode</th>
+    <th>pcode</th>
+    <th>quantity</th>
+</tr>
+</thead>
+
+<tbody>
+<tr ng-repeat="order in orders">
+    <td>{{$index+1}}</td>
+    <td>{{order.ccode}}</td>
+    <td>{{order.pcode}}</td>
+    <td>{{order.quantity}}</td>
+</tr>
+
+<tr>
+    <td>Sum</td>
+    <td>{{ordersCustomerCount}} unique customers</td>
+    <td>{{ordersProductCount}} unique products</td>
+    <td>{{ordersQuantitySum}} units ordered</td>
+</tr>
+</tbody>
+</table>

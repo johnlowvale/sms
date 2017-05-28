@@ -7,14 +7,19 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
 
     //product
     $scope.productsFile   = null; //product file select
-    $scope.products       = []; //product list
-    $scope.foundProducts  = []; //product search
-    $scope.sortedProducts = []; //product sort
+    $scope.products       = []; //products/list
+    $scope.foundProducts  = []; //products/search
+    $scope.sortedProducts = []; //products/sort
 
     //customer
     $scope.customersFile  = null; //customer file select
-    $scope.customers      = []; //customer list
-    $scope.foundCustomers = []; //customer search
+    $scope.customers      = []; //customers/list
+    $scope.foundCustomers = []; //customers/search
+
+    //order
+    $scope.ordersFile   = null; //order file select
+    $scope.orders       = []; //orders/list
+    $scope.sortedOrders = []; //orders/sort
 
     //load view for menu item
     function loadView(viewIndex) {
@@ -71,6 +76,12 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     function handleCustomersFile(event) {
         var file = event.target.files[0];
         $scope.customersFile = file;
+    }
+
+    //handle orders file select
+    function handleOrdersFile(event) {
+        var file = event.target.files[0];
+        $scope.ordersFile = file;
     }
 
     //upload products
@@ -167,6 +178,54 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         };
 
         reader.readAsText($scope.customersFile);
+    }
+
+    //upload orders
+    function uploadOrders() {
+        var reader = new FileReader();
+
+        //reading done event
+        reader.onload = function(e) {
+            try {
+                var orders = JSON.parse(reader.result);
+
+                //check json data
+                if (orders.length==0) {
+                    alert("Error: Empty orders file");
+                    return;
+                }
+
+                if (orders[0].ccode==null || orders[0].ccode.length==0 ||
+                orders[0].pcode==null || orders[0].pcode.length==0) {
+                    alert("Error: Bad orders file");
+                    return;
+                }
+
+                //post to server
+                $http.post("/orders/upload",{
+                    orders: orders
+                }).
+                then(
+                function success(response){
+                    var data = response.data;
+
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+
+                    alert("Successfully uploaded "+data.orderCount+" orders!");
+                },
+                function error(response) {
+                    alert("Failed to upload orders!");
+                });
+            }
+            catch (error) {
+                alert(error);
+            }
+        };
+
+        reader.readAsText($scope.ordersFile);
     }
 
     //add product
@@ -288,6 +347,32 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         },
         function error(response) {
             alert("Failed to get product list!");
+        });
+    }
+
+    //get all orders
+    function getOrderList() {
+
+        //post to server
+        $http.post("/orders/list",{}).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.orders              = data.orders;
+            $scope.ordersCustomerCount = data.customerCount;
+            $scope.ordersProductCount  = data.productCount;
+            $scope.ordersQuantitySum   = data.quantitySum;
+
+            alert("Current number of orders: "+data.orders.length);
+        },
+        function error(response) {
+            alert("Failed to get order list!");
         });
     }
 
@@ -477,15 +562,45 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //sort all orders
+    function sortOrderList(sortBy) {
+
+        //post to server
+        $http.post("/orders/sort",{
+            sortBy: sortBy
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.sortedOrders              = data.orders;
+            $scope.sortedOrdersCustomerCount = data.customerCount;
+            $scope.sortedOrdersProductCount  = data.productCount;
+            $scope.sortedOrdersQuantitySum   = data.quantitySum;
+
+            alert("Sorted "+data.orders.length+" orders!");
+        },
+        function error(response) {
+            alert("Failed to sort order list!");
+        });
+    }
+
     //view init
     function init() {
-        if ($("#products-file").length==0 || $("#customers-file").length==0) {
+        if ($("#products-file").length==0 || $("#customers-file").length==0 || $("#orders-file").length==0) {
             setTimeout(init,100);
             return;
         }
 
+        //events for file inputs
         document.getElementById("products-file").addEventListener("change",handleProductsFile,false);
         document.getElementById("customers-file").addEventListener("change",handleCustomersFile,false);
+        document.getElementById("orders-file").addEventListener("change",handleOrdersFile,false);
     }
 
     //ALL SCOPE FUNCTIONS=======================================================
@@ -507,6 +622,11 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.saveCustomersToFile = saveCustomersToFile;
     $scope.searchForCustomers  = searchForCustomers;
     $scope.deleteCustomer      = deleteCustomer;
+
+    //orders
+    $scope.uploadOrders  = uploadOrders;
+    $scope.getOrderList  = getOrderList;
+    $scope.sortOrderList = sortOrderList;
 
     //view init
     $scope.init = init;

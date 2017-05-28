@@ -43,7 +43,7 @@ public class App {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(PORT),0);
             
-            //url handlers
+            //base handlers
             server.createContext("/",         new RootHandler());
             server.createContext("/resources",new ResourcesHandler());
             
@@ -64,8 +64,14 @@ public class App {
             server.createContext("/customers/list",   new CustomersListHandler());
             server.createContext("/customers/search", new CustomersSearchHandler());
             
+            //order handlers            
+            server.createContext("/orders/upload", new OrdersUploadHandler());            
+            server.createContext("/orders/list",   new OrdersListHandler());            
+            server.createContext("/orders/sort",   new OrdersSortHandler());
+            
             //start server
             server.start();
+            
             Utils.log("Simple Sale Management System started on port "+PORT);
             Utils.log("Point browser to http://localhost to view the web application!");
             Utils.log("This web application has been only tested on Chrome!");
