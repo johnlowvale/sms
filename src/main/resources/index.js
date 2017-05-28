@@ -3,10 +3,11 @@
 angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$http){
 
     //scope variables
-    $scope.currentView   = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
-    $scope.productsFile  = null; //product file select
-    $scope.products      = []; //product list
-    $scope.foundProducts = []; //product search
+    $scope.currentView    = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
+    $scope.productsFile   = null; //product file select
+    $scope.products       = []; //product list
+    $scope.foundProducts  = []; //product search
+    $scope.sortedProducts = []; //product sort
 
     //load view for menu item
     function loadView(viewIndex) {
@@ -255,6 +256,28 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //sort all products
+    function sortProductList() {
+
+        //post to server
+        $http.post("/products/sort",{}).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.sortedProducts = data.products;
+            alert("Sorted "+data.products.length+" products!");
+        },
+        function error(response) {
+            alert("Failed to sort product list!");
+        });
+    }
+
     //view init
     function init() {
         if ($("#products-file").length==0) {
@@ -273,6 +296,7 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.saveProductsToFile = saveProductsToFile;
     $scope.searchForProducts  = searchForProducts;
     $scope.deleteProduct      = deleteProduct;
+    $scope.sortProductList    = sortProductList;
     $scope.init               = init;
 }]);
 

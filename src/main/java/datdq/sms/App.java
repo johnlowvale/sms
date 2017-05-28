@@ -48,11 +48,13 @@ public class App {
             server.createContext("/resources",new ResourcesHandler());
             
             //main handlers
-            server.createContext("/products/upload", new ProductsUploadHandler());
             server.createContext("/product/add",     new ProductAddHandler());
-            server.createContext("/products/list",   new ProductsListHandler());
-            server.createContext("/products/search", new ProductsSearchHandler());
             server.createContext("/product/delete",  new ProductDeleteHandler());
+            
+            server.createContext("/products/upload", new ProductsUploadHandler());            
+            server.createContext("/products/list",   new ProductsListHandler());
+            server.createContext("/products/search", new ProductsSearchHandler());            
+            server.createContext("/products/sort",   new ProductsSortHandler());
             
             //start server
             server.start();
