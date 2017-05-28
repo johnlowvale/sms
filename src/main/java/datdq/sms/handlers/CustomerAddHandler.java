@@ -50,7 +50,7 @@ public class CustomerAddHandler implements HttpHandler {
             }
             else {
                 App.customers.add(requestData);
-                message = "New product added";
+                message = "New customer added";
             }
             
             //make response

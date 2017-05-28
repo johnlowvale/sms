@@ -388,7 +388,7 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
                 return;
             }
 
-            $scope.customerProducts = data.customers;
+            $scope.foundCustomers = data.customers;
         },
         function error(response) {
             alert("Failed to search for customers!");
