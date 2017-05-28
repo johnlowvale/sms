@@ -43,7 +43,7 @@ public class ProductAddHandler implements HttpHandler {
             
             //check if product is already existing
             String  message = "";
-            Product product = Algos.sequencialFind(App.products,requestData,new ProductComparator());  
+            Product product = Algos.sequentialFind(App.products,requestData,new ProductComparator());  
             
             if (product!=null) {
                 product.quantity += requestData.quantity;

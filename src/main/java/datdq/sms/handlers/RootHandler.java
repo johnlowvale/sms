@@ -27,6 +27,7 @@ public class RootHandler implements HttpHandler {
      */
     public void handle(HttpExchange http) {
         Http.sendHtml(http,Utils.getResourceUtf8("/index.html"));
+        Utils.log("Response sent.");
     } 
 }
 

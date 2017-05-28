@@ -12,11 +12,11 @@ body {
     padding:20px; background:#eee; margin-left:340px;
 }
 
-#product-list-table {
+#product-list-table, #product-search-table {
     border-collapse:collapse;
 }
 
-#product-list-table th, #product-list-table td {
+#product-list-table th, #product-list-table td, #product-search-table th, #product-search-table td {
     border:1px solid gray;
 }
 

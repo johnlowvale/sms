@@ -51,6 +51,8 @@ public class App {
             server.createContext("/products/upload", new ProductsUploadHandler());
             server.createContext("/product/add",     new ProductAddHandler());
             server.createContext("/products/list",   new ProductsListHandler());
+            server.createContext("/products/search", new ProductsSearchHandler());
+            server.createContext("/product/delete",  new ProductDeleteHandler());
             
             //start server
             server.start();

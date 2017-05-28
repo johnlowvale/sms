@@ -53,6 +53,8 @@ public class ResourcesHandler implements HttpHandler {
             Http.sendImage(http, responseText);
         else
             Http.sendHtml(http, responseText);
+        
+        Utils.log("Response sent.");
     }
 }
 

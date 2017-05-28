@@ -3,10 +3,10 @@
 angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$http){
 
     //scope variables
-    $scope.currentView  = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
-    $scope.productsFile = null;
-    $scope.products     = [];
-    $scope.productsSaveAs = "";
+    $scope.currentView   = ""; //"1.1"->"1.8", "2.1"->"2.6", "3.1"->"3.3"
+    $scope.productsFile  = null; //product file select
+    $scope.products      = []; //product list
+    $scope.foundProducts = []; //product search
 
     //load view for menu item
     function loadView(viewIndex) {
@@ -195,6 +195,66 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
+    //search for products
+    function searchForProducts() {
+        var productCode = $("#product-code-search").val().trim();
+
+        //check value
+        if (productCode.length==0) {
+            alert("Please enter all fields");
+            return;
+        }
+
+        //post to server
+        $http.post("/products/search",{
+            pcode: productCode
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            $scope.foundProducts = data.products;
+        },
+        function error(response) {
+            alert("Failed to search for products!");
+        });
+    }
+
+    //delete a product
+    function deleteProduct() {
+        var productCode = $("#product-code-delete").val().trim();
+
+        //check value
+        if (productCode.length==0) {
+            alert("Please enter all fields");
+            return;
+        }
+
+        //post to server
+        $http.post("/product/delete",{
+            pcode: productCode
+        }).
+        then(
+        function success(response){
+            var data = response.data;
+
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            alert(data.message);
+        },
+        function error(response) {
+            alert("Failed to delete product!");
+        });
+    }
+
     //view init
     function init() {
         if ($("#products-file").length==0) {
@@ -211,6 +271,8 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.addProduct         = addProduct;
     $scope.getProductList     = getProductList;
     $scope.saveProductsToFile = saveProductsToFile;
+    $scope.searchForProducts  = searchForProducts;
+    $scope.deleteProduct      = deleteProduct;
     $scope.init               = init;
 }]);
 

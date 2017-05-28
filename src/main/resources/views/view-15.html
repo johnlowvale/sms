@@ -1,1 +1,35 @@
-1.5
+<big><b>Search for products</b></big>
+<div>&nbsp;</div>
+
+Product code (pcode, eg: dd):<br/>
+<input id="product-code-search"/>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: multiple products may be shown</i><br/>
+<button ng-click="searchForProducts();">Search for products</button>
+<div>&nbsp;</div>
+
+<table id="product-search-table">
+<thead>
+<tr>
+    <th>#</th>
+    <th>pcode</th>
+    <th>pro_name</th>
+    <th>quantity</th>
+    <th>sale</th>
+    <th>price</th>
+    <th>pro_image_url</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="product in foundProducts">
+    <td>{{$index+1}}</td>
+    <td>{{product.pcode}}</td>
+    <td>{{product.pro_name}}</td>
+    <td>{{product.quantity}}</td>
+    <td>{{product.sale}}</td>
+    <td>{{product.price}}</td>
+    <td>...</td>
+</tr>
+</tbody>
+</table>
