@@ -1,5 +1,15 @@
+/*
+ * Simple Sale Management System
+ * DSA Assignment 1
+ * @file    Main client UI code file
+ * @version 1.0
+ * @author  Dat Dinhquoc
+ */
+"use strict";
 
-//home controller
+/**
+ * Home controller
+ */
 angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$http){
 
     //scope variables
@@ -21,12 +31,16 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
     $scope.orders       = []; //orders/list
     $scope.sortedOrders = []; //orders/sort
 
-    //load view for menu item
+    /**
+     * Load view for menu item
+     */
     function loadView(viewIndex) {
         $scope.currentView = viewIndex;
     }
 
-    //trigger download
+    /**
+     * Trigger download
+     */
     function triggerDownload(fileName,fileContent,addBom) {
         var textToSave    = fileContent;
         var hiddenElement = document.createElement("a");
@@ -66,25 +80,33 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         document.body.removeChild(hiddenElement);
     }
 
-    //handle products file select
+    /**
+     * Handle products file select
+     */
     function handleProductsFile(event) {
         var file = event.target.files[0];
         $scope.productsFile = file;
     }
 
-    //handle customers file select
+    /**
+     * Handle customers file select
+     */
     function handleCustomersFile(event) {
         var file = event.target.files[0];
         $scope.customersFile = file;
     }
 
-    //handle orders file select
+    /**
+     * Handle orders file select
+     */
     function handleOrdersFile(event) {
         var file = event.target.files[0];
         $scope.ordersFile = file;
     }
 
-    //upload products
+    /**
+     * Upload products
+     */
     function uploadProducts() {
         var reader = new FileReader();
 
@@ -132,7 +154,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         reader.readAsText($scope.productsFile);
     }
 
-    //upload customers
+    /**
+     * Upload customers
+     */
     function uploadCustomers() {
         var reader = new FileReader();
 
@@ -180,7 +204,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         reader.readAsText($scope.customersFile);
     }
 
-    //upload orders
+    /**
+     * Upload orders
+     */
     function uploadOrders() {
         var reader = new FileReader();
 
@@ -228,7 +254,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         reader.readAsText($scope.ordersFile);
     }
 
-    //add product
+    /**
+     * Add product
+     */
     function addProduct() {
         var productCode  = $("#product-code-add").val().trim();
         var productName  = $("#product-name-add").val().trim();
@@ -272,7 +300,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //add customer
+    /**
+     * Add customer
+     */
     function addCustomer() {
         var customerCode  = $("#customer-code-add").val().trim();
         var customerName  = $("#customer-name-add").val().trim();
@@ -306,7 +336,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //get all products
+    /**
+     * Get all products
+     */
     function getProductList() {
 
         //post to server
@@ -328,7 +360,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //get all customers
+    /**
+     * Get all customers
+     */
     function getCustomerList() {
 
         //post to server
@@ -350,7 +384,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //get all orders
+    /**
+     * Get all orders
+     */
     function getOrderList() {
 
         //post to server
@@ -376,7 +412,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //save products to file
+    /**
+     * Save products to file
+     */
     function saveProductsToFile() {
 
         //post to server
@@ -398,7 +436,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //save customers to file
+    /**
+     * Save customers to file
+     */
     function saveCustomersToFile() {
 
         //post to server
@@ -420,7 +460,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //search for products
+    /**
+     * Search for products
+     */
     function searchForProducts() {
         var productCode = $("#product-code-search").val().trim();
 
@@ -450,7 +492,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //search for customers
+    /**
+     * Search for customers
+     */
     function searchForCustomers() {
         var customerCode = $("#customer-code-search").val().trim();
 
@@ -480,7 +524,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //delete a product
+    /**
+     * Delete a product
+     */
     function deleteProduct() {
         var productCode = $("#product-code-delete").val().trim();
 
@@ -510,7 +556,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //delete a customer
+    /**
+     * Delete a customer
+     */
     function deleteCustomer() {
         var customerCode = $("#customer-code-delete").val().trim();
 
@@ -540,7 +588,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //sort all products
+    /**
+     * Sort all products
+     */
     function sortProductList() {
 
         //post to server
@@ -562,7 +612,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //sort all orders
+    /**
+     * Sort all orders
+     */
     function sortOrderList(sortBy) {
 
         //post to server
@@ -590,7 +642,9 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         });
     }
 
-    //view init
+    /**
+     * AngularJS view init
+     */
     function init() {
         if ($("#products-file").length==0 || $("#customers-file").length==0 || $("#orders-file").length==0) {
             setTimeout(init,100);
@@ -603,7 +657,7 @@ angular.module("sms",[]).controller("home",["$scope","$http",function($scope,$ht
         document.getElementById("orders-file").addEventListener("change",handleOrdersFile,false);
     }
 
-    //ALL SCOPE FUNCTIONS=======================================================
+    //ALL ANGULAR SCOPE FUNCTIONS===============================================
     $scope.loadView = loadView;
 
     //products
