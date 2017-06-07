@@ -1,0 +1,103 @@
+<!doctype html>
+<!--
+ * Simple Sale Management System
+ * DSA Assignment 1
+ * @file    Main UI HTML file
+ * @version 1.0
+ * @author  Dat Dinhquoc
+ *-->
+  
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Sale Management System - datdqgt00570@fpt.edu.vn</title>
+
+    <!--jquery-->
+    <!--script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script-->
+    <script src="/resources/libs/jquery.js"></script>
+
+    <!--angularjs-->
+    <!--script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script-->
+    <script src="/resources/libs/angular.js"></script>
+
+    <!--home js-->
+    <script src="/resources/index.js"></script>
+
+    <!--home css-->
+    <link rel="stylesheet" type="text/css" href="/resources/index.css"/>
+</head>
+
+<body ng-app="sms" ng-controller="home" ng-init="init();">
+<div id="side-menu">
+    <big><b>MENU</b></big>
+    <div>&nbsp;</div>
+
+    <big><b>Product list</b></big>:<br/>
+    1.1. <a href="javascript:" ng-click="loadView('1.1');">Load data from file</a><br/>
+    1.2. <a href="javascript:" ng-click="loadView('1.2');">Input and add new item</a><br/>
+    1.3. <a href="javascript:" ng-click="loadView('1.3');">Display data</a><br/>
+    1.4. <a href="javascript:" ng-click="loadView('1.4');">Save product list to file</a><br/>
+    1.5. <a href="javascript:" ng-click="loadView('1.5');">Search by pcode</a><br/>
+    1.6. <a href="javascript:" ng-click="loadView('1.6');">Delete by pcode</a><br/>
+    1.7. <a href="javascript:" ng-click="loadView('1.7');">Sort by pcode</a><br/>
+    1.8. <a href="javascript:" ng-click="loadView('1.8');">Delete the node after the node having code = xCode</a><br/>
+    <hr/>
+
+    <big><b>Customer list</b></big>:<br/>
+    2.1. <a href="javascript:" ng-click="loadView('2.1');">Load data from file</a><br/>
+    2.2. <a href="javascript:" ng-click="loadView('2.2');">Input and add new item</a><br/>
+    2.3. <a href="javascript:" ng-click="loadView('2.3');">Display data</a><br/>
+    2.4. <a href="javascript:" ng-click="loadView('2.4');">Save customer list to file</a><br/>
+    2.5. <a href="javascript:" ng-click="loadView('2.5');">Search by ccode</a><br/>
+    2.6. <a href="javascript:" ng-click="loadView('2.6');">Delete by ccode</a><br/>
+    <hr/>
+
+    <big><b>Order list</b></big>:<br/>
+    3.1. <a href="javascript:" ng-click="loadView('3.1');">Input data</a><br/>
+    3.2. <a href="javascript:" ng-click="loadView('3.2');">Display data with total value</a><br/>
+    3.3. <a href="javascript:" ng-click="loadView('3.3');">Sort by pcode and ccode</a> 
+    <hr/>
+
+    <big><b><a href="javascript:window.scrollTo(0,0);">Scroll to top!</a></b></big><br/>
+    <big><b><a href="javascript:window.scrollTo(0,999999999);">Scroll to bottom!</a></b></big><br/>
+</div>
+
+<div id="content-box">
+    <big><b>
+        Simple Sale Management System 
+        (<a href="mailto:datdqgt00570@fpt.edu.vn">datdqgt00570@fpt.edu.vn</a>)
+    </b></big>
+    <div>&nbsp;</div>
+
+    <!--intro-->
+    <div ng-show="currentView==''">Please select menu item on the left!</div>
+
+    <!--product-->
+    <div ng-show="currentView=='1.1'" ng-include="'/resources/views/view-11.html'"></div>
+    <div ng-show="currentView=='1.2'" ng-include="'/resources/views/view-12.html'"></div>
+    <div ng-show="currentView=='1.3'" ng-include="'/resources/views/view-13.html'"></div>
+    <div ng-show="currentView=='1.4'" ng-include="'/resources/views/view-14.html'"></div>
+    <div ng-show="currentView=='1.5'" ng-include="'/resources/views/view-15.html'"></div>
+    <div ng-show="currentView=='1.6'" ng-include="'/resources/views/view-16.html'"></div>
+    <div ng-show="currentView=='1.7'" ng-include="'/resources/views/view-17.html'"></div>
+    <div ng-show="currentView=='1.8'" ng-include="'/resources/views/view-18.html'"></div>
+
+    <!--customer-->
+    <div ng-show="currentView=='2.1'" ng-include="'/resources/views/view-21.html'"></div>
+    <div ng-show="currentView=='2.2'" ng-include="'/resources/views/view-22.html'"></div>
+    <div ng-show="currentView=='2.3'" ng-include="'/resources/views/view-23.html'"></div>
+    <div ng-show="currentView=='2.4'" ng-include="'/resources/views/view-24.html'"></div>
+    <div ng-show="currentView=='2.5'" ng-include="'/resources/views/view-25.html'"></div>
+    <div ng-show="currentView=='2.6'" ng-include="'/resources/views/view-26.html'"></div>
+
+    <!--order-->
+    <div ng-show="currentView=='3.1'" ng-include="'/resources/views/view-31.html'"></div>
+    <div ng-show="currentView=='3.2'" ng-include="'/resources/views/view-32.html'"></div>
+    <div ng-show="currentView=='3.3'" ng-include="'/resources/views/view-33.html'"></div>
+</div>
+</body>
+</html>
+
+<!--end of file-->

@@ -1,0 +1,35 @@
+<!--view 1.3-->
+
+<big><b>Product list</b></big>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: 10000 products or above may make browser lag a bit</i><br/>
+<button ng-click="getProductList();">Get product list</button>
+<div>&nbsp;</div>
+
+<table class="generic-table">
+<thead>
+<tr>
+    <th>#</th>
+    <th>pcode</th>
+    <th>pro_name</th>
+    <th>quantity</th>
+    <th>sale</th>
+    <th>price</th>
+    <th>pro_image_url</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="product in products">
+    <td>{{$index+1}}</td>
+    <td>{{product.pcode}}</td>
+    <td>{{product.pro_name}}</td>
+    <td>{{product.quantity}}</td>
+    <td>{{product.sale}}</td>
+    <td>{{product.price}}</td>
+    <td>...</td>
+</tr>
+</tbody>
+</table>
+
+<!--end of file-->

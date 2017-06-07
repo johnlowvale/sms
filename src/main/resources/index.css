@@ -1,0 +1,30 @@
+/*
+ * Simple Sale Management System
+ * DSA Assignment 1
+ * @file    Main UI CSS file
+ * @version 1.0
+ * @author  Dat Dinhquoc
+ */
+
+body {
+    line-height:20px; margin:0; padding:0;
+}
+
+.generic-table {
+    border-collapse:collapse;
+}
+
+.generic-table th, .generic-table td {
+    border:1px solid gray;
+}
+
+#side-menu {
+    background:skyblue; width:300px; position:fixed; left:0; top:0;
+    padding:20px;
+}
+
+#content-box {
+    padding:20px; background:#eee; margin-left:340px;
+}
+
+/*end of file*/

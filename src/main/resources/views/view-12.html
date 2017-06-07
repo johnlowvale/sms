@@ -1,0 +1,29 @@
+<!--view 1.2-->
+
+<big><b>Add new product</b></big>
+<div>&nbsp;</div>
+
+Product code (pcode):<br/>
+<input id="product-code-add"/>
+<div>&nbsp;</div>
+
+Product name (pro_name):<br/>
+<input id="product-name-add"/>
+<div>&nbsp;</div>
+
+Number of products to add to (quantity):<br/>
+<input id="product-qty-add"/>
+<div>&nbsp;</div>
+
+Sold quantity (sale):<br/>
+<input value="0" disabled/>
+<div>&nbsp;</div>
+
+Price (price):<br/>
+<input id="product-price-add"/>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: pro_name, price will be ignored if pcode is already existing</i><br/>
+<button ng-click="addProduct();">Add product</button>
+
+<!--end of file-->

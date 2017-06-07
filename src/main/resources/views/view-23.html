@@ -1,0 +1,29 @@
+<!--view 2.3-->
+
+<big><b>Customer list</b></big>
+<div>&nbsp;</div>
+
+<i><b>Note</b>: 10000 customers or above may make browser lag a bit</i><br/>
+<button ng-click="getCustomerList();">Get customer list</button>
+<div>&nbsp;</div>
+
+<table class="generic-table">
+<thead>
+<tr>
+    <th>#</th>
+    <th>ccode</th>
+    <th>cus_name</th>
+    <th>phone</th>
+</tr>
+</thead>
+<tbody>
+<tr ng-repeat="customer in customers">
+    <td>{{$index+1}}</td>
+    <td>{{customer.ccode}}</td>
+    <td>{{customer.cus_name}}</td>
+    <td>{{customer.phone}}</td>
+</tr>
+</tbody>
+</table>
+
+<!--end of file-->
